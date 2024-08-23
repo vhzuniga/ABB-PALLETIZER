@@ -49,15 +49,14 @@ def home():
     return wpose
 
 def move_cartesian_path(px, py, pz):
+    q = quaternion_from_euler(3.14159, 0, 0)
     waypoints = []
-    safe= [1, 1, 0.8]
     
     wpose = arm_group.get_current_pose().pose
     wpose.position.x = px
     wpose.position.y = py
     wpose.position.z = pz
-
-
+    wpose.orientation.x, wpose.orientation.y, wpose.orientation.z, wpose.orientation.w = q
     waypoints.append(copy.deepcopy(wpose))
     (plan, fraction) = arm_group.compute_cartesian_path(waypoints, t, 0.0)  # jump_threshold
 
@@ -98,7 +97,7 @@ def grab_object(size):
     ee_group.go(joint_goal, wait=True)
 
     touch_links = robot.get_link_names(group=ee_group.get_name())
-    ee_group.attach_object("box", "garra1_link", touch_links)
+    ee_group.attach_object("box", "gripper", touch_links)
 
     # Attach object using gazebo_gripper only if gazebo is enabled
     if use_gazebo:
@@ -116,7 +115,7 @@ def lose_object():
         gazebo_gripper.detach_Object()
 
     touch_links = robot.get_link_names(group=ee_group.get_name())
-    ee_group.detach_object("garra1_link")
+    ee_group.detach_object("gripper")
     rospy.loginfo("ARCHIE dropped the object")
 
 # Main execution
@@ -139,7 +138,7 @@ data_writing_publisher.publish(("_none"))
 grasping_group = "ee_group"
 
 # ADD BOX rviz
-addBox("box", 1, 0.5, 0.8, 0.02, 0.02, 0.02, scene)
+addBox("box", 1, 0.5, 0.8, 0.2, 0.2, 0.15, scene)
 wpose = arm_group.get_current_pose().pose
 #rospy.logwarn(wpose)
 
@@ -153,28 +152,30 @@ if use_gazebo:
     gazebo_gripper._Box_Link_Name = "link"
 
 puntos = [
-    [0.4, 1.15, 0.4],    
-    [0.8, 1.15, 0.4],
-    [0.4, 1.45, 0.4],
-    [0.8, 1.45, 0.4],
-    [0.4, 1.75, 0.4],
-    [0.8, 1.75, 0.4],
-    [0.4, 2.05, 0.4],       
-    [1, 0.5, 0.8],
-    [0.8, 2.05, 0.4]]
+    [0, 1.15, 0.4],    
+    [0, 1.15, 0.4],
+    [0, 1.45, 0.4],
+    [0, 1.45, 0.4],
+    [0, 1.75, 0.4],
+    [0, 1.75, 0.4],
+    [0, 1.75, 0.4],       
+    [0, 2.05, 0.4],
+    [0, 2.05, 0.4]]
 
-move_joints(0, 0, 0, 0, 0, 1.57)
-
+i=1
 for punto in puntos:
-
-    #BAnda transportadora
-    move_cartesian_path(1,0.5,0.8)
     
+
+    print("caja #",i)
+    #BAnda transportadora
+    move_cartesian_path(1,0.0,0.8)
+    wpose = arm_group.get_current_pose().pose
     grab_object("medium")
     rospy.sleep(0.1)
 
     #Lugar seguro
-    move_cartesian_path(1, 1, 1)
+    
+    move_cartesian_path(wpose.position.x, wpose.position.y, 1)
     wpose = arm_group.get_current_pose().pose
     #rospy.logwarn(wpose)
     rospy.sleep(0.1)
@@ -188,11 +189,20 @@ for punto in puntos:
     rospy.sleep(0.1)
 
     #Lugar seguro
-    move_cartesian_path(1, 1, 1)
+    move_cartesian_path(wpose.position.x, wpose.position.y, 1)
     wpose = arm_group.get_current_pose().pose
     #rospy.logwarn(wpose)
     rospy.sleep(0.1)
     rospy.loginfo("Posicion segura")
+
+    i+=1
+
+
+
+
+
+
+#wpose.orientation = arm_group.get_current_pose().pose.orientation.x
 
 
 
@@ -201,7 +211,7 @@ for punto in puntos:
 
 #move_joints(-1.5699811638948276, 0.35076022743452813, -0.17050017674796938, 0, 0.014684045245539014, 0)
 
-#rospy.sleep(0.1)
+rospy.sleep(0.1)
 
 
 
