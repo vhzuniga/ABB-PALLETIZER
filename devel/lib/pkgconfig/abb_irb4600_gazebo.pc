@@ -1,0 +1,8 @@
+prefix=/home/victor/Vídeos/Robot-Paletizador/devel
+
+Name: abb_irb4600_gazebo
+Description: Description of abb_irb4600_gazebo
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

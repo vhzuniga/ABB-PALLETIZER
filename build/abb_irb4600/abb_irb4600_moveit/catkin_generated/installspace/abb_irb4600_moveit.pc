@@ -1,0 +1,8 @@
+prefix=/home/victor/Vídeos/Robot-Paletizador/install
+
+Name: abb_irb4600_moveit
+Description: Description of abb_irb4600_moveit
+Version: 0.3.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

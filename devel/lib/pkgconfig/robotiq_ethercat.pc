@@ -1,0 +1,8 @@
+prefix=/home/victor/Vídeos/Robot-Paletizador/devel
+
+Name: robotiq_ethercat
+Description: Description of robotiq_ethercat
+Version: 1.0.0
+Cflags: -I/home/victor/Vídeos/Robot-Paletizador/src/Robotiq-grippers/grippers_communication/robotiq_ethercat/include
+Libs: -L${prefix}/lib -lrobotiq_ethercat
+Requires: soem roscpp

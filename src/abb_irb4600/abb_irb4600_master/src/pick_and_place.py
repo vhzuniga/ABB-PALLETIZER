@@ -45,7 +45,7 @@ def home():
     joint_goal = [0, 0, 0, 0, 0, 0]
 
     arm_group.go(joint_goal, wait=True)
-    rospy.loginfo("ARCHIE is at home position.")
+    rospy.loginfo("Abb is at home position.")
     return wpose
 
 def move_cartesian_path(px, py, pz):
@@ -103,7 +103,7 @@ def grab_object(size):
     if use_gazebo:
         gazebo_gripper.attach_Object()
 
-    rospy.loginfo("ARCHIE picked the object")
+    rospy.loginfo("Abb picked the object")
 
 def lose_object():
     joint_goal = ee_group.get_current_joint_values()
@@ -116,7 +116,7 @@ def lose_object():
 
     touch_links = robot.get_link_names(group=ee_group.get_name())
     ee_group.detach_object("gripper")
-    rospy.loginfo("ARCHIE dropped the object")
+    rospy.loginfo("Abb dropped the object")
 
 # Main execution
 moveit_commander.roscpp_initialize(sys.argv)
@@ -152,15 +152,16 @@ if use_gazebo:
     gazebo_gripper._Box_Link_Name = "link"
 
 puntos = [
-    [0, 1.15, 0.4],    
-    [0, 1.15, 0.4],
-    [0, 1.45, 0.4],
-    [0, 1.45, 0.4],
-    [0, 1.75, 0.4],
-    [0, 1.75, 0.4],
-    [0, 1.75, 0.4],       
-    [0, 2.05, 0.4],
-    [0, 2.05, 0.4]]
+    [0.4, 1.15, 0.4],    
+    [0.8, 1.15, 0.4],
+    [0.4, 1.45, 0.4],
+    [0.8, 1.45, 0.4],
+    [0.4, 1.75, 0.4],
+    [0.8, 1.75, 0.4],
+    [0.4, 1.75, 0.4],       
+    [0.8, 2.05, 0.4],
+    [0.4, 2.05, 0.4]
+    ]
 
 i=1
 for punto in puntos:
@@ -168,14 +169,22 @@ for punto in puntos:
 
     print("caja #",i)
     #BAnda transportadora
-    move_cartesian_path(1,0.0,0.8)
+    move_cartesian_path(2.3,0.0,0.8)
     wpose = arm_group.get_current_pose().pose
-    grab_object("medium")
+    grab_object("small")
     rospy.sleep(0.1)
 
     #Lugar seguro
     
     move_cartesian_path(wpose.position.x, wpose.position.y, 1)
+    wpose = arm_group.get_current_pose().pose
+    #rospy.logwarn(wpose)
+    rospy.sleep(0.1)
+    rospy.loginfo("Posicion segura")
+
+        #Lugar seguro
+    
+    move_cartesian_path(punto[0],punto[1], wpose.position.z)
     wpose = arm_group.get_current_pose().pose
     #rospy.logwarn(wpose)
     rospy.sleep(0.1)

@@ -1,0 +1,2 @@
+Robotiq-grippers/conveyor_gripper_description:Robotiq-grippers/robotiq_2f_85_description:Robotiq-grippers/robotiq_3f_description:abb_irb4600/abb_irb4600_description:abb_irb4600/abb_irb4600_gazebo:abb_irb4600/abb_irb4600_master:abb_irb4600/abb_irb4600_moveit:abb_irb4600/abb_resources:custom_pallet_gripper:gazebo_ros_link_attacher
+-DCATKIN_DEVEL_PREFIX=/home/victor/Vídeos/Robot-Paletizador/devel -DCMAKE_INSTALL_PREFIX=/home/victor/Vídeos/Robot-Paletizador/install -G Unix Makefiles

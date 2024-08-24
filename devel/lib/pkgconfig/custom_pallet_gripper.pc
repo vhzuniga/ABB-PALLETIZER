@@ -1,0 +1,8 @@
+prefix=/home/victor/Vídeos/Robot-Paletizador/devel
+
+Name: custom_pallet_gripper
+Description: Description of custom_pallet_gripper
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
