@@ -22,7 +22,7 @@ pip3 install rospkg
 
 
 After this create the workspace.
-Dentro de la carpeta donde se clonó el repositorio principal. Por ejemplo si fue en la carpeta documentos.
+Inside the folder where the main repository was cloned. For example if it was in the documents folder.
 cd ~/Documentos/catkin_ws
 rosdep install --from-paths src --ignore-src -r -y
 catkin_make
